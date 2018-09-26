@@ -6,6 +6,7 @@
 
 // Project Includes
 #include "AssetManager.h"
+#include "Animation.h"
 
 int main()
 {
@@ -31,6 +32,16 @@ int main()
 	sf::Sound testSound;
 	testSound.setBuffer(AssetManager::GetSoundBuffer("audio/death.wav"));
 	testSound.play();
+
+	sf::Text testText;
+	testText.setFont(AssetManager::GetFont("fonts/mainFont.ttf"));
+	testText.setString("Test Text");
+
+	// Testing Animation
+	Animation testAnimation;
+	testAnimation.SetSprite(testSprite);
+	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerRun1.png"));
+	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerRun2.png"));
 
 	// end game setup
 	// --------------------------------------
@@ -62,6 +73,8 @@ int main()
 		// --------------------------------------
 		sf::Time frameTime = gameClock.restart();
 
+		// Update our animation
+		testAnimation.Update(frameTime);
 		// end update
 		// --------------------------------------
 
@@ -75,6 +88,7 @@ int main()
 		gameWindow.clear();
 
 		// Draw Everything
+		gameWindow.draw(testText);
 		gameWindow.draw(testSprite);
 
 		// Display the window contents to the screen
