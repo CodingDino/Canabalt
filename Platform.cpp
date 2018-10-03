@@ -40,3 +40,9 @@ void Platform::Draw(sf::RenderTarget& _target)
 {
 	_target.draw(m_sprite);
 }
+
+
+sf::FloatRect Platform::GetCollider()
+{
+	return m_sprite.getGlobalBounds();
+}
