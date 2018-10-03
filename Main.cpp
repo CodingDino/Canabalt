@@ -29,6 +29,9 @@ int main()
 	Player myPlayer;
 	myPlayer.Spawn();
 
+	// Create game camera
+	sf::View camera = gameWindow.getDefaultView();
+
 	// end game setup
 	// --------------------------------------
 
@@ -66,6 +69,12 @@ int main()
 		// Process all game objects
 		myPlayer.Update(frameTime);
 
+		// Update camera position
+		camera.setCenter(
+			myPlayer.GetPosition().x + camera.getSize().x * 0.4f, 
+			camera.getCenter().y
+		);
+
 		// end update
 		// --------------------------------------
 
@@ -79,7 +88,14 @@ int main()
 		gameWindow.clear();
 
 		// Draw Everything
+
+		// Draw the game world using the camera
+		gameWindow.setView(camera);
 		myPlayer.Draw(gameWindow);
+
+		// Draw the UI to the window
+		gameWindow.setView(gameWindow.getDefaultView());
+		// TODO: UI
 
 		// Display the window contents to the screen
 		gameWindow.display();
