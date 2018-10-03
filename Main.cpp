@@ -6,8 +6,7 @@
 
 // Project Includes
 #include "AssetManager.h"
-#include "Animation.h"
-#include "AnimationSystem.h"
+#include "Player.h"
 
 int main()
 {
@@ -26,33 +25,9 @@ int main()
 	// Create AssetManager
 	AssetManager assets;
 
-	// Testing AssetManager
-	sf::Sprite testSprite;
-	testSprite.setTexture(AssetManager::GetTexture("graphics/playerJump.png"));
-
-	sf::Sound testSound;
-	testSound.setBuffer(AssetManager::GetSoundBuffer("audio/death.wav"));
-	testSound.play();
-
-	sf::Text testText;
-	testText.setFont(AssetManager::GetFont("fonts/mainFont.ttf"));
-	testText.setString("Test Text");
-
-	// Testing Animation
-	AnimationSystem testAnimationSystem;
-	testAnimationSystem.SetSprite(testSprite);
-
-	Animation& testAnimation = testAnimationSystem.CreateAnimation("run");
-	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerRun1.png"));
-	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerRun2.png"));
-	testAnimation.SetLoop(true);
-	testAnimation.SetPlayBackSpeed(10.0f);
-
-	Animation& jumpAnimation = testAnimationSystem.CreateAnimation("jump");
-	jumpAnimation.AddFrame(AssetManager::GetTexture("graphics/playerJump.png"));
-
-	
-	testAnimationSystem.Play("run");
+	// Create player
+	Player myPlayer;
+	myPlayer.Spawn();
 
 	// end game setup
 	// --------------------------------------
@@ -69,7 +44,8 @@ int main()
 		sf::Event event;
 		while (gameWindow.pollEvent(event))
 		{
-
+			// Pass input to game objects
+			myPlayer.Input(event);
 
 
 			if (event.type == sf::Event::Closed)
@@ -87,8 +63,9 @@ int main()
 		// --------------------------------------
 		sf::Time frameTime = gameClock.restart();
 
-		// Update our animation
-		testAnimationSystem.Update(frameTime);
+		// Process all game objects
+		myPlayer.Update(frameTime);
+
 		// end update
 		// --------------------------------------
 
@@ -102,8 +79,7 @@ int main()
 		gameWindow.clear();
 
 		// Draw Everything
-		gameWindow.draw(testText);
-		gameWindow.draw(testSprite);
+		myPlayer.Draw(gameWindow);
 
 		// Display the window contents to the screen
 		gameWindow.display();
